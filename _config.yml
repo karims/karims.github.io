@@ -293,7 +293,7 @@ defaults:
   # _math
   - scope:
       path: "_math"
-      type: math
+      type: posts
     values:
       layout: single
       author_profile: true
