@@ -265,10 +265,10 @@ compress_html:
   ignore:
     envs: development
 
-collections:
-  math:
-    output: true
-    permalink: /:collection/:path/
+# collections:
+#   math:
+#     output: true
+#     permalink: /:collection/:path/
 
 # Defaults
 defaults:
@@ -292,7 +292,7 @@ defaults:
       author_profile: true
   # _math
   - scope:
-      path: ""
+      path: "_math"
       type: math
     values:
       layout: single
