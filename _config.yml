@@ -265,6 +265,10 @@ compress_html:
   ignore:
     envs: development
 
+collections:
+  math:
+    output: true
+    permalink: /:collection/:path/
 
 # Defaults
 defaults:
@@ -286,3 +290,11 @@ defaults:
     values:
       layout: single
       author_profile: true
+  # _math
+  - scope:
+      path: ""
+      type: math
+    values:
+      layout: single
+      author_profile: true
+      share: true
