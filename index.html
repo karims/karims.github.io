@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Karim Saheb — AI Systems & Code Intelligence</title>
+  <meta
+    name="description"
+    content="Karim Saheb — independent AI systems researcher building tools for code intelligence, inference optimization, and experimental ML architectures."
+  />
+  <style>
+    :root {
+      --bg: #140f0b;
+      --bg-soft: #1d1712;
+      --panel: #241c15;
+      --panel-2: #2c2219;
+      --text: #f4eadb;
+      --muted: #bcae9b;
+      --faint: #756858;
+      --accent: #52c7b8;
+      --accent-2: #f2b56b;
+      --danger: #ff6b6b;
+      --border: rgba(244, 234, 219, 0.12);
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.38);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at top left, rgba(82, 199, 184, 0.12), transparent 32rem),
+        radial-gradient(circle at top right, rgba(242, 181, 107, 0.10), transparent 30rem),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .wrap {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(16px);
+      background: rgba(20, 15, 11, 0.78);
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav {
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      font-family: var(--mono);
+      color: var(--accent);
+      font-size: 0.95rem;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 22px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .hero {
+      padding: 96px 0 70px;
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 44px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      font-family: var(--mono);
+      color: var(--accent);
+      font-size: 0.88rem;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(3rem, 8vw, 6.8rem);
+      line-height: 0.92;
+      letter-spacing: -0.08em;
+    }
+
+    .subtitle {
+      margin: 26px 0 0;
+      color: var(--muted);
+      font-size: clamp(1.08rem, 2vw, 1.35rem);
+      max-width: 720px;
+    }
+
+    .subtitle strong {
+      color: var(--text);
+      font-weight: 620;
+    }
+
+    .actions {
+      margin-top: 34px;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 12px 18px;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.03);
+      font-size: 0.95rem;
+      transition: 160ms ease;
+    }
+
+    .btn.primary {
+      color: #0e1514;
+      background: var(--accent);
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(82, 199, 184, 0.45);
+    }
+
+    .terminal {
+      background: linear-gradient(180deg, rgba(36, 28, 21, 0.98), rgba(29, 23, 18, 0.98));
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .terminal-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.18);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--faint);
+    }
+
+    .dot:nth-child(1) { background: #ff6b6b; }
+    .dot:nth-child(2) { background: #f2b56b; }
+    .dot:nth-child(3) { background: #52c7b8; }
+
+    pre {
+      margin: 0;
+      padding: 22px;
+      overflow-x: auto;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      line-height: 1.65;
+    }
+
+    .cmd { color: var(--accent); }
+    .ok { color: var(--accent-2); }
+    .white { color: var(--text); }
+    .dim { color: var(--faint); }
+
+    section {
+      padding: 56px 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 24px;
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      letter-spacing: -0.045em;
+    }
+
+    .section-tag {
+      font-family: var(--mono);
+      color: var(--faint);
+      font-size: 0.85rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: rgba(36, 28, 21, 0.76);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 22px;
+      min-height: 220px;
+      transition: 160ms ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(82, 199, 184, 0.32);
+      background: rgba(44, 34, 25, 0.86);
+    }
+
+    .card .kicker {
+      font-family: var(--mono);
+      color: var(--accent);
+      font-size: 0.78rem;
+      margin-bottom: 18px;
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 1.35rem;
+      line-height: 1.15;
+      letter-spacing: -0.035em;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .card .meta {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 5px 8px;
+      background: rgba(0, 0, 0, 0.12);
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .panel {
+      background: rgba(36, 28, 21, 0.76);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 24px;
+    }
+
+    .panel p {
+      color: var(--muted);
+      margin-top: 0;
+    }
+
+    .list {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .item {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .item:last-child {
+      border-bottom: 0;
+    }
+
+    .item strong {
+      display: block;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .item span {
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    footer {
+      padding: 46px 0 64px;
+      color: var(--faint);
+      font-family: var(--mono);
+      font-size: 0.86rem;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 900px) {
+      .hero,
+      .split {
+        grid-template-columns: 1fr;
+      }
+
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .wrap {
+        width: min(100% - 28px, 1120px);
+      }
+
+      nav {
+        height: auto;
+        padding: 18px 0;
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      .hero {
+        padding-top: 64px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      pre {
+        font-size: 0.78rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <nav>
+        <a class="brand" href="#">karim::systems</a>
+        <div class="nav-links">
+          <a href="#projects">Projects</a>
+          <a href="#research">Research</a>
+          <a href="#writing">Writing</a>
+          <a href="https://github.com/karims">GitHub</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">AI systems · inference optimization · code intelligence</div>
+        <h1>Karim Saheb</h1>
+        <p class="subtitle">
+          Independent builder working on <strong>AI system understanding</strong>,
+          <strong>LLM inference experiments</strong>, and <strong>alternative sequence architectures</strong>.
+          I like tools that make complex software and models inspectable.
+        </p>
+        <div class="actions">
+          <a class="btn primary" href="#projects">View projects</a>
+          <a class="btn" href="https://github.com/karims">GitHub</a>
+          <a class="btn" href="#writing">Read notes</a>
+        </div>
+      </div>
+
+      <div class="terminal" aria-label="Terminal demo">
+        <div class="terminal-top">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+        <pre><span class="cmd">$ sydes trace</span> <span class="white">"/users"</span> --method POST
+
+<span class="ok">→ matched endpoint</span>
+  repo: api
+  handler: create_user
+
+<span class="ok">→ traced downstream calls</span>
+  route → service → repository
+
+<span class="ok">→ detected sink</span>
+  database write: db.commit()
+
+<span class="dim">artifact: trace_graph.json</span></pre>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="section-head">
+        <h2>Featured projects</h2>
+        <div class="section-tag">━━━━━━━━ SYSTEMS / OSS</div>
+      </div>
+
+      <div class="grid">
+        <a href="https://github.com/sydes-ai/sydes" target="_blank">
+          <article class="card">
+            <div class="kicker">01 / CODE INTELLIGENCE</div>
+            <h3>Sydes</h3>
+            <p>
+              AI system understanding for real codebases. Trace API flows across services,
+              identify downstream calls, detect sinks, and export system graphs.
+            </p>
+            <div class="meta">
+              <span class="pill">LLM-first</span>
+              <span class="pill">program analysis</span>
+              <span class="pill">graphs</span>
+            </div>
+          </article>
+        </a>
+
+        <a href="https://github.com/sydes-ai/ai-autopsy" target="_blank">
+          <article class="card">
+            <div class="kicker">02 / INCIDENT ANALYSIS</div>
+            <h3>AI Autopsy</h3>
+            <p>
+              CLI-first incident and log analysis experiments using local and remote LLMs
+              to interpret events, timelines, and root-cause candidates.
+            </p>
+            <div class="meta">
+              <span class="pill">CLI</span>
+              <span class="pill">logs</span>
+              <span class="pill">reasoning</span>
+            </div>
+          </article>
+        </a>
+
+        <a href="https://github.com/karims/bioagents" target="_blank">
+          <article class="card">
+            <div class="kicker">03 / MULTI AGENT SYSTEMS</div>
+            <h3>Bio Agents</h3>
+            <p>
+              Experimental autonomous agent workflows for biology-oriented reasoning,
+              orchestration, and AI-assisted scientific exploration.
+            </p>
+            <div class="meta">
+              <span class="pill">agents</span>
+              <span class="pill">workflows</span>
+              <span class="pill">research</span>
+            </div>
+          </article>
+        </a>
+      </div>
+    </section>
+
+    <section id="research">
+      <div class="section-head">
+        <h2>Research taste</h2>
+        <div class="section-tag">━━━━━━━━ EXPERIMENTS</div>
+      </div>
+
+      <div class="split">
+        <div class="panel">
+          <p>
+            I am interested in systems where the boundary between software engineering,
+            ML research, and infrastructure becomes blurry.
+          </p>
+          <div class="list">
+            <div class="item">
+              <strong>Program understanding</strong>
+              <span>Turning real codebases into inspectable flow graphs.</span>
+            </div>
+            <div class="item">
+              <strong>Inference optimization</strong>
+              <span>Memory-aware serving, KV-cache design, and decode-time shortcuts.</span>
+            </div>
+            <div class="item">
+              <strong>Sequence architecture</strong>
+              <span>Exploring spectral, recurrent, and low-rank alternatives to attention.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="terminal">
+          <div class="terminal-top">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+          <pre><span class="cmd">$ python train_assm.py</span>
+
+<span class="white">model:</span> spectral-shift mixer
+<span class="white">goal:</span> reduce attention dependence
+<span class="white">eval:</span> val_bpb, throughput, params
+
+<span class="ok">step 0200</span>  val_bpb=1.31
+<span class="ok">step 0400</span>  val_bpb=1.28
+<span class="ok">step 0600</span>  val_bpb=1.26
+
+<span class="dim">notes: keep experiments small, measurable, reproducible</span></pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="writing">
+      <div class="section-head">
+        <h2>Writing & notebooks</h2>
+        <div class="section-tag">━━━━━━━━ NOTES</div>
+      </div>
+
+      <div class="grid">
+        <a href="http://karims.in/tensor-hacker/" target="_blank">
+          <article class="card">
+            <div class="kicker">NOTEBOOK SERIES</div>
+            <h3>Tensor Hacker</h3>
+            <p>
+              A problem-oriented notebook series on vectors, tensors, PyTorch,
+              and system-level ML thinking.
+            </p>
+          </article>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div>Karim Saheb · building AI systems, code intelligence tools, and experimental ML infrastructure.</div>
+    </div>
+  </footer>
+</body>
+</html>
